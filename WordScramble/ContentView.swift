@@ -30,11 +30,9 @@ struct ContentView: View {
                     Image(systemName: "\($0.count).circle.fill")
                 }
             }
-            
+            .navigationBarTitle("\(rootWord)")
+            .onAppear(perform: startGame)
         }
-    .navigationBarTitle("\(rootWord)")
-    .onAppear(perform: startGame)
-    
     }
     
     
