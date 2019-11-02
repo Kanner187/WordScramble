@@ -85,6 +85,8 @@ struct ContentView: View {
             if let content = try? String(contentsOf: filePath){
                 let allWords = content.components(separatedBy: "\n")
                 rootWord = allWords.randomElement() ?? "silkworm"
+                usedWords = [String]()
+                score = 0
                 return
             }
         }
