@@ -16,6 +16,7 @@ struct ContentView: View {
    @State private var showingAlert = false
    @State private var alertMessage = ""
    @State private var alertTitle = ""
+   @State private var score = 0
     
     
     //Mark:- Body
@@ -33,12 +34,18 @@ struct ContentView: View {
                     Text("\($0)")
                     Image(systemName: "\($0.count).circle.fill")
                 }
+                
+                Text("Score: \(score)")
+                    .font(.headline)
             }
             .navigationBarTitle("\(rootWord)")
             .onAppear(perform: startGame)
             .alert(isPresented: $showingAlert) { () -> Alert in
                 Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .default(Text("Okay")))
             }
+            .navigationBarItems(trailing: Button(action: startGame, label: {
+                Text("New Word")
+            }))
         }
     }
     
@@ -54,7 +61,7 @@ struct ContentView: View {
             return
         }
         guard isPossible(word: new) else {
-            configureAlert(title: "Word invalid", message: "Words must be from the above")
+            configureAlert(title: "Word invalid", message: "Words must be from the root word")
             return
         }
         
@@ -63,7 +70,13 @@ struct ContentView: View {
             return
         }
         
+        guard isNotRootWord(word: new) else{
+            configureAlert(title: "That's the root Word!", message: "Can not use the root word")
+            return
+        }
+        
         usedWords.insert(new, at: 0)
+        score += (new.count * usedWords.count)
         newWord = ""
     }
     
@@ -98,10 +111,20 @@ struct ContentView: View {
     
     
     func isAWord(word: String) -> Bool{
+        if word.count < 3{
+            return false
+        }
         let checker = UITextChecker()
         let range = NSRange(location: 0, length: word.utf16.count)
         let misSpelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
         return misSpelledRange.location == NSNotFound
+    }
+    
+    func isNotRootWord(word: String) -> Bool {
+        if word == rootWord{
+            return false
+        }
+        return true
     }
     
     func configureAlert(title: String , message: String){
