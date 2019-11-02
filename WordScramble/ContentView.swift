@@ -44,6 +44,7 @@ struct ContentView: View {
                 Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .default(Text("Okay")))
             }
             .navigationBarItems(trailing: Button(action: startGame, label: {
+                Image(systemName: "arrow.clockwise")
                 Text("New Word")
             }))
         }
