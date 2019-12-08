@@ -22,7 +22,7 @@ struct ContentView: View {
     //Mark:- Body
     var body: some View {
         NavigationView{
-            VStack(spacing: 10){
+            VStack(spacing: 5){
                 TextField("   Enter new word", text: $newWord , onCommit: addNewWord)
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
@@ -30,9 +30,15 @@ struct ContentView: View {
                 .padding()
                 
                 
-                List(usedWords, id: \.self){
-                    Text("\($0)")
-                    Image(systemName: "\($0.count).circle.fill")
+                List(usedWords, id: \.self){ word in
+                    HStack{
+                        Text("\(word)")
+                        Spacer()
+                        Image(systemName: "\(word.count).circle.fill")
+                    }
+                    .accessibilityElement(children: .ignore)
+                    .accessibility(label: Text("\(word) has \(word.count) letters"))
+                    
                 }
                 
                 Text("Score: \(score)")
