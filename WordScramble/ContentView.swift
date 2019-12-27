@@ -10,24 +10,24 @@ import SwiftUI
 
 struct ContentView: View {
     //Mark:- Properties
-   @State private var usedWords = [String]()
-   @State private var rootWord = ""
-   @State private var newWord = ""
-   @State private var showingAlert = false
-   @State private var alertMessage = ""
-   @State private var alertTitle = ""
-   @State private var score = 0
+    @State private var usedWords = [String]()
+    @State private var rootWord = ""
+    @State private var newWord = ""
+    @State private var showingAlert = false
+    @State private var alertMessage = ""
+    @State private var alertTitle = ""
+    @State private var score = 0
     
     
     //Mark:- Body
     var body: some View {
         NavigationView{
             VStack(spacing: 5){
-                TextField("   Enter new word", text: $newWord , onCommit: addNewWord)
-                .autocapitalization(.none)
-                .disableAutocorrection(true)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+                TextField("Enter new word", text: $newWord , onCommit: addNewWord)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
                 
                 
                 List(usedWords, id: \.self){ word in
@@ -54,7 +54,7 @@ struct ContentView: View {
             }
             .navigationBarTitle("\(rootWord)")
             .onAppear(perform: startGame)
-            .alert(isPresented: $showingAlert) { () -> Alert in
+            .alert(isPresented: $showingAlert.animation(.interactiveSpring())) { () -> Alert in
                 Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .default(Text("Okay")))
             }
             .navigationBarItems(trailing: Button(action: startGame, label: {
@@ -103,6 +103,7 @@ struct ContentView: View {
                 rootWord = allWords.randomElement() ?? "silkworm"
                 usedWords = [String]()
                 score = 0
+                newWord = ""
                 return
             }
         }
