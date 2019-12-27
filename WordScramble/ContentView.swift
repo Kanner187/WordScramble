@@ -31,13 +31,21 @@ struct ContentView: View {
                 
                 
                 List(usedWords, id: \.self){ word in
-                    HStack{
-                        Text("\(word)")
-                        Spacer()
-                        Image(systemName: "\(word.count).circle.fill")
+                    GeometryReader{geometry in
+                        HStack{
+                            Text("\(word)")
+                                .offset(x: geometry.frame(in: .global).midY / 14)
+                            Spacer()
+                            Image(systemName: "\(word.count).circle.fill")
+                                .foregroundColor(Color(red: Double(geometry.frame(in: .global).midY / 51 ) / Double(word.count), green: Double(geometry.frame(in: .global).midY / 50 ) / Double(word.count * 4) , blue: Double(word.count / 2)))
+                        }
+                            
+                        
+                        .accessibilityElement(children: .ignore)
+                        .accessibility(label: Text("\(word) has \(word.count) letters"))
                     }
-                    .accessibilityElement(children: .ignore)
-                    .accessibility(label: Text("\(word) has \(word.count) letters"))
+                    
+                    
                     
                 }
                 
@@ -85,6 +93,7 @@ struct ContentView: View {
         usedWords.insert(new, at: 0)
         score += (new.count * usedWords.count)
         newWord = ""
+        
     }
     
     func startGame(){
